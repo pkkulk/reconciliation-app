@@ -11,7 +11,9 @@ node_modules
 venv
 dist
 dist-ssr
-*.local
+git rm -r --cached venv
+git commit -m "Remove venv from tracking"
+git push
 
 # Editor directories and files
 .vscode/*

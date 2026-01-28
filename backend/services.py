@@ -45,6 +45,8 @@ def process_settlement(file_content: bytes) -> pd.DataFrame:
     df['PartnerPin'] = df['PartnerPin'].replace({'nan': np.nan, '': np.nan})
     df = df.dropna(subset=['PartnerPin'])
     df['PartnerPin'] = df['PartnerPin'].str.replace(r'\.0$', '', regex=True)
+    # Remove '777' prefix to match with Statement file's XXP-extracted 8-digit ID
+    df['PartnerPin'] = df['PartnerPin'].str.replace(r'^777', '', regex=True)
     payout = pd.to_numeric(df.iloc[:, 10].astype(str).str.replace(",", ""), errors='coerce')
     rate = pd.to_numeric(df.iloc[:, 12].astype(str).str.replace(",", ""), errors='coerce')
     df['EstimatedUSD'] = payout / rate

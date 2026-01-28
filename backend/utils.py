@@ -7,8 +7,8 @@ def extract_partner_pin(description: str) -> str:
     """
     match_xxp = re.search(r'XXP(\d{8})', str(description))
     if match_xxp:
-        return "777" + match_xxp.group(1)
-    matches_11 = re.findall(r'(\d{11})', str(description))
-    if matches_11:
-        return matches_11[-1] 
+        return match_xxp.group(1)
+    matches_end = re.findall(r'(\d{8,12})\s*$', str(description))
+    if matches_end:
+        return matches_end[-1] 
     return None

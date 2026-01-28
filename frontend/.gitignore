@@ -8,12 +8,9 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-venv
 dist
 dist-ssr
-git rm -r --cached venv
-git commit -m "Remove venv from tracking"
-git push
+*.local
 
 # Editor directories and files
 .vscode/*

@@ -16,7 +16,7 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"status": "✅ Reconciliation Backend is Live", "documentation": "/docs"}
+    return {"status": "Reconciliation Backend is Live", "documentation": "/docs"}
 
 @app.post("/reconcile")
 async def reconcile_endpoint(

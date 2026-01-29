@@ -13,6 +13,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/")
+def read_root():
+    return {"status": "✅ Reconciliation Backend is Live", "documentation": "/docs"}
+
 @app.post("/reconcile")
 async def reconcile_endpoint(
     statement_file: UploadFile = File(...), 

@@ -110,6 +110,17 @@ def reconcile_files(statement_bytes: bytes, settlement_bytes: bytes):
     reversal_mismatch_df = pd.concat([reversal_mismatch_se, reversal_mismatch_st], ignore_index=True)
     only_se_final = only_se_df[~only_se_df['PartnerPin'].isin(reversal_pins)].copy()
     only_st_final = only_st_df[~only_st_df['PartnerPin'].isin(reversal_pins)].copy()
+
+    # Map Statement columns to standard columns for better visibility in Frontend
+    # Statement 'Date' -> 'PostDate'
+    if 'Date' in only_st_final.columns:
+        only_st_final['PostDate'] = only_st_final['Date']
+    # Statement 'PQsTrOptOons' (Description) -> 'Pin Number' (Show description context)
+    if 'PQsTrOptOons' in only_st_final.columns:
+        only_st_final['Pin Number'] = only_st_final['PQsTrOptOons']
+    # Statement 'Settle.Amt' -> 'TransferAmt'
+    if 'Settle.Amt' in only_st_final.columns:
+        only_st_final['TransferAmt'] = only_st_final['Settle.Amt']
     def to_dict_records(df):
         return df.astype(object).where(pd.notnull(df), None).to_dict(orient='records')
     results = {

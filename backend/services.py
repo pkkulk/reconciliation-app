@@ -45,7 +45,7 @@ def process_settlement(file_content: bytes) -> pd.DataFrame:
     df['PartnerPin'] = df['PartnerPin'].replace({'nan': np.nan, '': np.nan})
     df = df.dropna(subset=['PartnerPin'])
     df['PartnerPin'] = df['PartnerPin'].str.replace(r'\.0$', '', regex=True)
-    # Remove '777' prefix to match with Statement file's XXP-extracted 8-digit ID
+    
     df['PartnerPin'] = df['PartnerPin'].str.replace(r'^777', '', regex=True)
     payout = pd.to_numeric(df.iloc[:, 10].astype(str).str.replace(",", ""), errors='coerce')
     rate = pd.to_numeric(df.iloc[:, 12].astype(str).str.replace(",", ""), errors='coerce')
@@ -111,14 +111,14 @@ def reconcile_files(statement_bytes: bytes, settlement_bytes: bytes):
     only_se_final = only_se_df[~only_se_df['PartnerPin'].isin(reversal_pins)].copy()
     only_st_final = only_st_df[~only_st_df['PartnerPin'].isin(reversal_pins)].copy()
 
-    # Map Statement columns to standard columns for better visibility in Frontend
-    # Statement 'Date' -> 'PostDate'
+    
+    
     if 'Date' in only_st_final.columns:
         only_st_final['PostDate'] = only_st_final['Date']
-    # Statement 'PQsTrOptOons' (Description) -> 'Pin Number' (Show description context)
+    
     if 'PQsTrOptOons' in only_st_final.columns:
         only_st_final['Pin Number'] = only_st_final['PQsTrOptOons']
-    # Statement 'Settle.Amt' -> 'TransferAmt'
+    
     if 'Settle.Amt' in only_st_final.columns:
         only_st_final['TransferAmt'] = only_st_final['Settle.Amt']
     def to_dict_records(df):

@@ -44,7 +44,8 @@ export default function UploadForm({ onUploadSuccess, onUploadStart, isProcessin
         formData.append('statement_file', files.statement);
         formData.append('settlement_file', files.settlement);
         try {
-            const response = await axios.post('http://localhost:8000/reconcile', formData, {
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+            const response = await axios.post(`${apiUrl}/reconcile`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             onUploadSuccess(response.data);
